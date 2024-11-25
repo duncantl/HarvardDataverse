@@ -3,3 +3,6 @@ import(RJSONIO)
 
 # exportPattern(".*")
 export(getDOIs)
+export(getNumMatches)
+export(mkDF)
+

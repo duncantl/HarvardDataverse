@@ -72,8 +72,49 @@ function(x)
 
     tmp = lapply(scalars, function(var) sapply(x, function(x) orNA(x[[var]])))
     names(tmp) = scalars
-    as.data.frame(tmp)
+    # as.data.frame(tmp, check.names = FALSE)
+    structure(tmp, class = "data.frame", row.names = seq_len(length(x)))
 }
+
+
+mkDF =
+function(x)    
+{
+    scalars = c("name", "type", "url", "file_id", "published_at", "file_type", "file_content_type",
+                "size_in_bytes", "md5", "dataset_name", "dataset_persistent_id",
+                 "dataset_citation", "publicationStatuses", "releaseOrCreateDate")
+
+    tmp = lapply(x, function(x) x[scalars])
+    tmp2 = do.call(rbind, tmp)
+    v = as.data.frame(tmp2)    
+    v[] = lapply(v, function(x) { w = sapply(x, is.null); x[w] = NA })
+    v[] = lapply(v, function(x) { w = sapply(x, length) > 1; x[w] = sapply(x[w], `[`, 1); unlist(x) })
+    v
+}
+
+mkDF =
+    # Faster version.
+    # We delay coercing to a data.frame until after "fixing" the entries in each column.
+    # This is about 3.5 times faster.
+    # Note we don't have v[] = lapply(....), but simply v = lapply()
+    # So less work to insert back into data.frame.
+    # 
+function(x)    
+{
+    scalars = c("name", "type", "url", "file_id", "published_at", "file_type", "file_content_type",
+                "size_in_bytes", "md5", "dataset_name", "dataset_persistent_id",
+                 "dataset_citation", "publicationStatuses", "releaseOrCreateDate")
+
+    tmp = lapply(x, function(x) x[scalars])
+    tmp2 = do.call(rbind, tmp)
+    # Replace NULL values in each "column" with NA
+    v = lapply(v, function(x) { w = sapply(x, is.null); x[w] = NA })
+    # Now handle cases where we have more than one value in an entry.
+    # Empirically, this is only publicationStatuses - so far.
+    v = lapply(v, function(x) { w = sapply(x, length) > 1; x[w] = sapply(x[w], `[`, 1); unlist(x) })
+    as.data.frame(tmp2)    
+}
+
 
 orNA =
 function(x, val = NA)

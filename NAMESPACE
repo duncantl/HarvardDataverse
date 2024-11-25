@@ -1,0 +1,5 @@
+import(RCurl)
+import(RJSONIO)
+
+# exportPattern(".*")
+export(getDOIs)

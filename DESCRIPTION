@@ -1,0 +1,9 @@
+Package: HarvardDataverse
+Version: 0.1-0
+Title: Simple querying of the Harvard Dataverse API
+Description: Functions to query the Harvard Dataverse API so that we can find
+  R source files uploaded to the dataverse.
+  This mimics Python code in dataverse-r-study.
+Author: Duncan Temple Lang
+Maintainer: Duncan Temple Lang <dtemplelang@ucdavis.edu>
+Imports: RCurl, RJSONIO

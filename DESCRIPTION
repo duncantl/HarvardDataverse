@@ -5,5 +5,7 @@ Description: Functions to query the Harvard Dataverse API so that we can find
   R source files uploaded to the dataverse.
   This mimics Python code in dataverse-r-study.
 Author: Duncan Temple Lang
+Note: I have not checked if there is a package on CRAN with the basic functionality.  
+   Also, Florian Sihler told me about the dataverse-r-study.
 Maintainer: Duncan Temple Lang <dtemplelang@ucdavis.edu>
 Imports: RCurl, RJSONIO
